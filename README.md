@@ -1,6 +1,6 @@
 # MMM-PetFinder
 
-All types of animals for adoption. Cats, dogs, horses. I said ALL types.
+All types of animals for adoption. Cat, dog, bird, reptile, barnyard, horse. I said ALL types.
 
 ## Examples
 
