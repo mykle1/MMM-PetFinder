@@ -1,8 +1,8 @@
 /* Magic Mirror
- * Module: MMM-PetFinder
+ * Module: MMM-Petfinder
  *
  * By Mykle1
- * 
+ *
  */
 Module.register("MMM-PetFinder", {
 
@@ -19,6 +19,7 @@ Module.register("MMM-PetFinder", {
         animationSpeed: 10,
         initialLoadDelay: 1875,
         retryDelay: 1500,
+        rotateInterval: 5 * 1000, //20 seconds
     },
 
 
@@ -31,10 +32,13 @@ Module.register("MMM-PetFinder", {
     start: function() {
         Log.info("Starting module: " + this.name);
 
-    // Set locale.
-    this.url = this.getUrl();
-    this.today = "";
-    this.scheduleUpdate();
+    
+    //  Set locale.
+        this.url = "http://api.petfinder.com/pet.find?&animal=dog&size=L&sex=F&location=14904&key=3e2e182953ee1790a11e32328995442d&format=json";
+        this.pet = {};
+        this.activeItem = 0;
+        this.rotateInterval = null;
+        this.scheduleUpdate();
     },
 
 
@@ -61,7 +65,14 @@ Module.register("MMM-PetFinder", {
             header.innerHTML = this.config.header;
             wrapper.appendChild(header);
         }
-		 
+		    var keys = Object.keys(this.pf);
+        if (keys.length > 0) {
+            if (this.activeItem >= keys.length) {
+                this.activeItem = 0;
+            }
+            var pf = this.pf[keys[this.activeItem]];
+            
+            
 
         var top = document.createElement("div");
         top.classList.add("list-row");
@@ -69,14 +80,14 @@ Module.register("MMM-PetFinder", {
 		// name, age, sex, size
         var name = document.createElement("div");
         name.classList.add("small", "bright", "name");
-        name.innerHTML = "My name is " + pf.pet.name.$t;
+        name.innerHTML = "My name is " + pf.name.$t;
         top.appendChild(name);
 		
 		
 		// age, sex and size of animal
         var age = document.createElement("div");
         age.classList.add("small", "bright", "ageSexSize");
-        age.innerHTML = pf.pet.age.$t + ", " + pf.pet.sex.$t + ", Size = " + pf.pet.size.$t;
+        age.innerHTML = '';
         top.appendChild(age);
 		
 		
@@ -84,7 +95,7 @@ Module.register("MMM-PetFinder", {
 		var pic = document.createElement("div");
         var img = document.createElement("img");
         img.classList.add("photo");
-        img.src = pf.pet.media.photos.photo[3].$t;
+        img.src = '';
         pic.appendChild(img);
         wrapper.appendChild(pic);
 		 
@@ -92,35 +103,45 @@ Module.register("MMM-PetFinder", {
 		// phone # of facility
         var phone = document.createElement("div");
         phone.classList.add("xsmall", "bright", "phone");
-        phone.innerHTML = "Contact phone - " + pf.pet.contact.phone.$t;
+        phone.innerHTML = "Contact phone - ";
         top.appendChild(phone);
 		 
 		 
 		// location of animal (city, state and zip code)
         var city = document.createElement("div");
         city.classList.add("xsmall", "bright", "location");
-        city.innerHTML = "Location - " + pf.pet.contact.city.$t + ", " + pf.pet.contact.state.$t + " " + pf.pet.contact.zip.$t ;
+        city.innerHTML = "Location - ";
         top.appendChild(city);
 		 
 		  
 		// email contact of animal
         var email = document.createElement("div");
         email.classList.add("xsmall", "bright", "email");
-        email.innerHTML = "Contact email - " + pf.pet.contact.email.$t;
+        email.innerHTML = "Contact email - ";
         top.appendChild(email);
 		 
 		 
 		// description
         var description = document.createElement("div");
         description.classList.add("xsmall", "bright", "description");
-        description.innerHTML = this.sTrim(pf.pet.description.$t, 187, ' ', ' ...'); // pf.pet.description.$t;
+        description.innerHTML = ''; // pf.pet.description.$t;
         top.appendChild(description);
-		 
+		
+			} 
 	
         wrapper.appendChild(top);
         return wrapper;
 
     },
+    
+    scheduleCarousel: function() {
+        console.log("Scheduling Pets...");
+        this.rotateInterval = setInterval(() => {
+            this.activeItem++;
+            this.updateDom(this.config.animationSpeed);
+        }, this.config.rotateInterval);
+    },
+
 
 	getUrl: function() {
 		var url = null;
@@ -144,7 +165,7 @@ Module.register("MMM-PetFinder", {
 
     processPetFinder: function(data) {
         this.today = data.Today;
-        this.pf = data;
+        this.pf = data.pets.pet;
         this.loaded = true;
      },
 	  
@@ -171,6 +192,9 @@ Module.register("MMM-PetFinder", {
     socketNotificationReceived: function(notification, payload) {
         if (notification === "PETFINDER_RESULT") {
             this.processPetFinder(payload);
+            if (this.rotateInterval == null) {
+                this.scheduleCarousel();
+            }
             this.updateDom(this.config.animationSpeed);
         }
         this.updateDom(this.config.initialLoadDelay);
