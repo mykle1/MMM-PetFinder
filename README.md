@@ -31,7 +31,7 @@ Fully annotated css file for coloring, sizing, aligning . . .
         position: "top_left",
         config: {
 			apiKey: "YOUR apiKey",   // <-- Your apiKey goes over there
-			animal: "dog",           // barnyard, bird, cat, dog, horse, reptile, smallfurry (lowercase)
+			animal: "dog",           // cat, dog, horse, bird, rabbit, barnyard, reptile, smallfurry (lowercase)
 			size: "M",               // S = Small, M = Medium, L = Large, XL = Extra-large (uppercase)
 			sex: "F",                // M = Male, F = Female (uppercase)
 			location: "10306",       // the ZIP/postal code or city and state (Canada)
@@ -42,3 +42,5 @@ Fully annotated css file for coloring, sizing, aligning . . .
     },
 
 ## Rescue a pet! They will be happy and so will you!
+
+## Thanks, yet again, to SpaceCowboysdude for finding my mistakes
