@@ -8,18 +8,18 @@ Module.register("MMM-PetFinder", {
 
     // Module config defaults.
     defaults: {
-		apiKey: "",
+		apiKey: "",             // Your API key
         animal: "dog",          // barnyard, bird, cat, dog, horse, reptile, smallfurry
         size: "M",              // S = small, M = medium, L = large, XL = extra-large
         sex: "F",               // M = male, F = female
-        location: "07723",      // the ZIP/postal code or city and state the animal should be located
+        location: "10306",      // the ZIP/postal code or city and state the animal should be located
         maxWidth: "300px",
 		useHeader: false,
-        updateInterval: 5 * 60 * 1000,
-        animationSpeed: 10,
+        animationSpeed: 1000,
         initialLoadDelay: 1875,
         retryDelay: 1500,
-        rotateInterval: 5 * 1000, //20 seconds
+        rotateInterval: 10 * 60 * 1000, // 10 minutes
+		updateInterval: 60 * 60 * 1000, // 1 hour
     },
 
 
@@ -34,7 +34,7 @@ Module.register("MMM-PetFinder", {
 
     
     //  Set locale.
-        this.url = "http://api.petfinder.com/pet.find?&animal=dog&size=L&sex=F&location=14904&key=3e2e182953ee1790a11e32328995442d&format=json";
+        this.url = "http://api.petfinder.com/pet.find?&animal=" + this.config.animal + "&size=" + this.config.size + "&sex=" + this.config.sex + "&location=" + this.config.location + "&key=" + this.config.apiKey + "&count=100&format=json";
         this.pet = {};
         this.activeItem = 0;
         this.rotateInterval = null;
@@ -45,6 +45,11 @@ Module.register("MMM-PetFinder", {
     getDom: function() {
 
         var pf = this.pf;
+		var apiKey = this.config.apiKey;
+		var animal = this.config.animal;
+		var size = this.config.size;
+		var sex = this.config.sex;
+		var location = this.config.location;
 
         var wrapper = document.createElement("div");
         wrapper.className = "wrapper";
@@ -65,6 +70,8 @@ Module.register("MMM-PetFinder", {
             header.innerHTML = this.config.header;
             wrapper.appendChild(header);
         }
+		
+			// rotation
 		    var keys = Object.keys(this.pf);
         if (keys.length > 0) {
             if (this.activeItem >= keys.length) {
@@ -73,59 +80,67 @@ Module.register("MMM-PetFinder", {
             var pf = this.pf[keys[this.activeItem]];
             
             
-
-        var top = document.createElement("div");
-        top.classList.add("list-row");
-		
-		// name, age, sex, size
-        var name = document.createElement("div");
-        name.classList.add("small", "bright", "name");
-        name.innerHTML = "My name is " + pf.name.$t;
-        top.appendChild(name);
-		
-		
-		// age, sex and size of animal
-        var age = document.createElement("div");
-        age.classList.add("small", "bright", "ageSexSize");
-        age.innerHTML = '';
-        top.appendChild(age);
-		
-		
-		// the picture of the pet
-		var pic = document.createElement("div");
-        var img = document.createElement("img");
-        img.classList.add("photo");
-        img.src = '';
-        pic.appendChild(img);
-        wrapper.appendChild(pic);
+			var top = document.createElement("div");
+			top.classList.add("list-row");
+			
+			// name
+			var name = document.createElement("div");
+			name.classList.add("small", "bright", "name");
+			console.log(pf);
+			name.innerHTML = "My name is " + pf.name.$t;
+			top.appendChild(name);
+			
+			
+			// age, sex and size of animal
+			var age = document.createElement("div");
+			age.classList.add("small", "bright", "ageSexSize");
+			age.innerHTML = pf.age.$t + ", " + pf.sex.$t + ", Size " + pf.size.$t;
+			top.appendChild(age);
+			
+			
+			// the picture of the pet
+			var pic = document.createElement("div");
+			var img = document.createElement("img");
+			img.classList.add("photo");
+			img.src = pf.media.photos.photo[3].$t;
+			pic.appendChild(img);
+			wrapper.appendChild(pic);
+			
+			
+			// location of animal (city, state and zip code)
+			var city = document.createElement("div");
+			city.classList.add("xsmall", "bright", "location");
+			city.innerHTML = "Location - " + pf.contact.city.$t + ", " + pf.contact.state.$t + " " + pf.contact.zip.$t;
+			top.appendChild(city);
 		 
 		 
-		// phone # of facility
-        var phone = document.createElement("div");
-        phone.classList.add("xsmall", "bright", "phone");
-        phone.innerHTML = "Contact phone - ";
-        top.appendChild(phone);
+		    // phone # of facility
+            var phone = document.createElement("div");
+            phone.classList.add("xsmall", "bright", "phone");
+		if (pf.contact.phone.$t === "" || undefined){
+			phone.innerHTML = "";
+			top.appendChild(phone);
+		} else
+            phone.innerHTML = "Phone contact - " + pf.contact.phone.$t;
+            top.appendChild(phone);
 		 
 		 
-		// location of animal (city, state and zip code)
-        var city = document.createElement("div");
-        city.classList.add("xsmall", "bright", "location");
-        city.innerHTML = "Location - ";
-        top.appendChild(city);
-		 
-		  
-		// email contact of animal
-        var email = document.createElement("div");
-        email.classList.add("xsmall", "bright", "email");
-        email.innerHTML = "Contact email - ";
-        top.appendChild(email);
-		 
-		 
-		// description
-        var description = document.createElement("div");
-        description.classList.add("xsmall", "bright", "description");
-        description.innerHTML = ''; // pf.pet.description.$t;
-        top.appendChild(description);
+			// email contact of animal
+			var email = document.createElement("div");
+			email.classList.add("xsmall", "bright", "email");
+		if  (pf.contact.email.$t === "" || undefined){
+			email.innerHTML = "";
+			top.appendChild(email);
+		} else
+			email.innerHTML = "Email contact - " + pf.contact.email.$t;
+			top.appendChild(email);
+			 
+			 
+			// description
+			var description = document.createElement("div");
+			description.classList.add("xsmall", "bright", "description");
+			description.innerHTML =  this.sTrim(pf.description.$t, 187, ' ', ' ...'); // pf.description.$t;
+			top.appendChild(description);
 		
 			} 
 	
@@ -142,26 +157,6 @@ Module.register("MMM-PetFinder", {
         }, this.config.rotateInterval);
     },
 
-
-	getUrl: function() {
-		var url = null;
-		var pf = this.pf;
-		var apiKey = this.config.apiKey;
-		var animal = this.config.animal;
-		var size = this.config.size;
-		var sex = this.config.sex;
-		var location = this.config.location;
-
-
-        if (animal === "" || size === "" || sex === "" || location === "") {
-            url = "http://api.petfinder.com/pet.getRandom?key=" + this.config.apiKey + "&animal=dog&size=S&sex=F&location=10306&output=basic&format=json";
-        } else if (animal !== "" || size !== "" || sex !== "" || location !== "");
-        url = "http://api.petfinder.com/pet.getRandom?key=" + this.config.apiKey + "&animal=" + this.config.animal + "&size=" + this.config.size + "&sex=" + this.config.sex + "&location=" + this.config.location + "&output=basic&format=json";
-        // console.log("Error can't get PetFinder url");
-
-        return url;
-
-    },
 
     processPetFinder: function(data) {
         this.today = data.Today;

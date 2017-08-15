@@ -1,6 +1,14 @@
 # MMM-PetFinder
 
-All types of animals for adoption. Cat, dog, bird, reptile, barnyard, horse. I said ALL types.
+* **293,097** Adoptable pets that need a good home.
+
+* **11,460** Shelters and rescue members across **NORTH AMERICA**.
+
+* **All** types of animals for adoption.
+
+* Cat, dog, bird, rabbit, reptile, barnyard, horse.
+
+* I said ALL types.
 
 ## Examples
 
@@ -24,14 +32,13 @@ Fully annotated css file for coloring, sizing, aligning . . .
         config: {
 			apiKey: "YOUR apiKEY",   // "Your apiKey Goes Here!",
 			animal: "dog",           // barnyard, bird, cat, dog, horse, reptile, smallfurry
-			size: "M",               // S = small, M = medium, L = large, XL = extra-large
-			sex: "F",                // M = male, F = female
-			location: "10306",       // the ZIP/postal code or city and state
+			size: "M",               // S = Small, M = Medium, L = Large, XL = Extra-large
+			sex: "F",                // M = Male, F = Female
+			location: "10306",       // the ZIP/postal code or city and state (Canada)
 			maxWidth: "300px",
 			useHeader: false,        // Must be true to use header
 			header: "Save me! Please take me home!",
-			updateInterval: 5 * 60 * 1000,
         }
     },
 
-## Rescue a pet and feel good about yourself!
+## Rescue a pet! They will be happy and so will you!
