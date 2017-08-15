@@ -43,3 +43,5 @@ Fully annotated css file for coloring, sizing, aligning . . .
     },
 
 ## Rescue a pet! They will be happy and so will you!
+
+## Thanks, yet again, to SpaceCowboysDude for spotting my mistakes
