@@ -63,7 +63,7 @@ Module.register("MMM-PetFinder", {
             return wrapper;
         }
 		 
-		 
+		    // header
 		if (this.config.useHeader != false) {
             var header = document.createElement("header");
             header.classList.add("small", "bright", "light", "header");
@@ -116,27 +116,27 @@ Module.register("MMM-PetFinder", {
 		 
 		    // phone # of facility
             var phone = document.createElement("div");
-            phone.classList.add("xsmall", "bright", "phone");
-		if (pf.contact.phone.$t === "" || undefined){
+            phone.classList.add("xsmall", "bright", "phone");	
+		if (pf.contact.phone.$t == "" || pf.contact.phone.$t == undefined){
 			phone.innerHTML = "";
 			top.appendChild(phone);
 		} else
-            phone.innerHTML = "Phone contact - " + pf.contact.phone.$t;
+            phone.innerHTML = "Phone - " + pf.contact.phone.$t;
             top.appendChild(phone);
 		 
 		 
-			// email contact of animal
+			// email contact of facility
 			var email = document.createElement("div");
 			email.classList.add("xsmall", "bright", "email");
-		if  (pf.contact.email.$t === "" || undefined){
+		if  (pf.contact.email.$t == "" || pf.contact.email.$t == undefined){
 			email.innerHTML = "";
 			top.appendChild(email);
 		} else
-			email.innerHTML = "Email contact - " + pf.contact.email.$t;
+			email.innerHTML = "Email - " + pf.contact.email.$t;
 			top.appendChild(email);
 			 
 			 
-			// description
+			// description of animal
 			var description = document.createElement("div");
 			description.classList.add("xsmall", "bright", "description");
 			description.innerHTML =  this.sTrim(pf.description.$t, 187, ' ', ' ...'); // pf.description.$t;
@@ -160,10 +160,11 @@ Module.register("MMM-PetFinder", {
 
     processPetFinder: function(data) {
         this.today = data.Today;
-        this.pf = data.pets.pet;
+        this.pf = data.pets.pet; // SpaceCowboysDude
         this.loaded = true;
      },
-	  
+	
+	// call this fucktion to shorten long text ( see description tag)
 	sTrim: function(str, length, delim, appendix) {
         if (str.length <= length) return str;
         var trimmedStr = str.substr(0, length + delim.length);
