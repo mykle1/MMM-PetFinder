@@ -30,10 +30,10 @@ Fully annotated css file for coloring, sizing, aligning . . .
         module: "MMM-PetFinder",
         position: "top_left",
         config: {
-			apiKey: "YOUR apiKEY",   // "Your apiKey Goes Here!",
-			animal: "dog",           // barnyard, bird, cat, dog, horse, reptile, smallfurry
-			size: "M",               // S = Small, M = Medium, L = Large, XL = Extra-large
-			sex: "F",                // M = Male, F = Female
+			apiKey: "YOUR apiKey",   // <-- Your apiKey goes over there
+			animal: "dog",           // barnyard, bird, cat, dog, horse, reptile, smallfurry (lowercase)
+			size: "M",               // S = Small, M = Medium, L = Large, XL = Extra-large (uppercase)
+			sex: "F",                // M = Male, F = Female (uppercase)
 			location: "10306",       // the ZIP/postal code or city and state (Canada)
 			maxWidth: "300px",
 			useHeader: false,        // Must be true to use header
