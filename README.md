@@ -12,7 +12,7 @@
 
 ## Examples
 
-* The pets will rotate on your mirror based on the criteria you enter into the config.
+* A rotation of adoptable pets on your mirror, based on the criteria you enter into the config.
 
 * One without a header.
 
