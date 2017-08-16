@@ -12,6 +12,8 @@
 
 ## Examples
 
+* The pets will rotate on your mirror based on the criteria you enter into the config.
+
 * One without a header.
 
 ![](pix/1.JPG) ![](pix/2.JPG)
