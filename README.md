@@ -33,8 +33,8 @@ Fully annotated css file for coloring, sizing, aligning . . .
         module: "MMM-PetFinder",
         position: "top_left",
         config: {
-			apiKey: "YOUR apiKEY",   // "Your apiKey Goes Here!",
-			animal: "dog",           // barnyard, bird, cat, dog, horse, reptile, smallfurry
+			apiKey: "YOUR apiKey",   // <-- Your apiKey goes there!",
+			animal: "dog",           // bird, cat, dog, horse, reptile, smallfurry, barnyard
 			size: "M",               // S = Small, M = Medium, L = Large, XL = Extra-large
 			sex: "F",                // M = Male, F = Female
 			location: "10306",       // the ZIP/postal code or city and state (Canada)
@@ -44,6 +44,6 @@ Fully annotated css file for coloring, sizing, aligning . . .
         }
     },
 
-## Rescue a pet! They will be happy and so will you!
+## Rescue a pet! They will be happier and so will you!
 
 ## Thanks, yet again, to SpaceCowboysDude for spotting my mistakes
