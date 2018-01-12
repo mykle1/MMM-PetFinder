@@ -148,6 +148,18 @@ Module.register("MMM-PetFinder", {
         return wrapper;
 
     },
+	
+	
+/////  Add this function to the modules you want to control with voice //////
+
+    notificationReceived: function(notification, payload) {
+        if (notification === 'HIDE_PETFINDER') {
+            this.hide(1000);
+        }  else if (notification === 'SHOW_PETFINDER') {
+            this.show(1000);
+        }
+            
+    },
     
     scheduleCarousel: function() {
         console.log("Scheduling Pets...");
